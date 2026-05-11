@@ -703,3 +703,20 @@ td {
         grid-template-columns: 1fr;
     }
 }
+
+.hidden {
+    display: none !important;
+}
+
+/* Memastikan canvas grafik tidak terlalu besar */
+.chart-container {
+    position: relative;
+    height: 250px;
+    width: 100%;
+    margin: 20px 0;
+}
+
+#resultChart {
+    width: 100% !important;
+    height: 100% !important;
+}

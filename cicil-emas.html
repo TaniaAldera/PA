@@ -1,68 +1,90 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Simulasi Cicil Emas - Pegadaian Mayang Mangurai</title>
-  <link rel="stylesheet" href="css/style.css"/>
-</head>
-<body>
-<div class="container">
-  <div class="header">
-    <div class="header-logo">
-      <img src="https://webstoriess.enkosa.com/wp-content/uploads/2024/01/Download-Logo-Galeri-24-Pegadaian-PNG.png" alt="Galeri 24 Gold"/>
-      <div class="header-text">
-        <h1>Cicil <span class="gold-text">Emas</span> Pegadaian</h1>
-        <p>Pegadaian Cabang Mayang Mangurai</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulasi Cicil Emas - Pegadaian Mayang Mangurai</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+        <div class="header">
+            <div class="header-logo">
+                <img src="https://webstoriess.enkosa.com/wp-content/uploads/2024/01/Download-Logo-Galeri-24-Pegadaian-PNG.png" alt="Galeri 24 Gold">
+                <div class="header-text">
+                    <h1>Cicil <span class="gold-text">Emas</span> Pegadaian</h1>
+                    <p>Pegadaian Cabang Mayang Mangurai</p>
+                </div>
+            </div>
+              <div class="header-right2">
+                <a href="index.html" class="btn-dashboard">Dashboard</a>
+                <div id="date-display">Memuat Tanggal...</div>
+              </div>
+        </div>
+
+      <div style="text-align: center; margin-bottom: 20px">
+        <p
+          style="
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: var(--dark-gold);
+          "
+        >
+          PILIH MARGIN ANGSURAN:
+        </p>
+        <div class="margin-selector">
+          <button class="tab-btn" onclick="switchMargin(0.0053, this)">
+            0.53%
+          </button>
+          <button class="tab-btn" onclick="switchMargin(0.0071, this)">
+            0.71%
+          </button>
+          <button class="tab-btn active" onclick="switchMargin(0.0092, this)">
+            0.92%
+          </button>
+        </div>
+        <div class="control-group">
+            <label class="control-label">INPUT NOMINAL DP (RUPIAH):</label>
+            <div class="input-container">
+                <span class="currency-label">Rp</span>
+                <input type="text" id="dp-rupiah-input" class="dp-input-box" placeholder="Contoh: 500.000" oninput="handleDPInput(this.value)">
+            </div>
+            <div id="dp-info-text" class="info-dp">Minimal DP 15% dari harga emas</div>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Denominasi</th>
+              <th>DP 15% + ADM</th>
+              <th>Pinjaman</th>
+              <th>3 Bln</th>
+              <th>6 Bln</th>
+              <th>12 Bln</th>
+              <th>18 Bln</th>
+              <th>24 Bln</th>
+              <th>36 Bln</th>
+            </tr>
+          </thead>
+          <tbody id="simulation-table"></tbody>
+        </table>
+      </div>
+
+      <div class="footer-info">
+        <p>
+          <b>Pegadaian Mayang Mangurai - Mengatasi Masalah Tanpa Masalah</b
+          ><br />
+          <small
+            >Harga emas Galeri 24 bersifat fluktuatif mengikuti harga pasar
+            dunia.</small
+          >
+        </p>
       </div>
     </div>
-    <div class="header-right2">
-      <a href="index.html" class="btn-dashboard">← Kembali</a>
-      <div id="date-display" class="date-display">Memuat Tanggal...</div>
-    </div>
-  </div>
 
-  <div style="text-align:center;margin-bottom:20px;">
-    <p style="margin-bottom:15px;font-weight:bold;color:var(--dark-gold);">PILIH MARGIN ANGSURAN:</p>
-    <div class="margin-selector">
-      <button class="tab-btn" onclick="switchMargin(0.0053, this)">0.53%</button>
-      <button class="tab-btn" onclick="switchMargin(0.0071, this)">0.71%</button>
-      <button class="tab-btn active" onclick="switchMargin(0.0092, this)">0.92%</button>
-    </div>
-    <div class="control-group">
-      <label class="control-label">INPUT NOMINAL DP (RUPIAH):</label>
-      <div class="input-container">
-        <span class="currency-label">Rp</span>
-        <input type="text" id="dp-rupiah-input" class="dp-input-box" placeholder="Contoh: 500.000" oninput="handleDPInput(this.value)"/>
-      </div>
-      <div id="dp-info-text" class="info-dp">Minimal DP 15% dari harga emas</div>
-    </div>
-  </div>
-
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Denominasi</th>
-          <th>DP 15% + ADM</th>
-          <th>Pinjaman</th>
-          <th>3 Bln</th>
-          <th>6 Bln</th>
-          <th>12 Bln</th>
-          <th>18 Bln</th>
-          <th>24 Bln</th>
-          <th>36 Bln</th>
-        </tr>
-      </thead>
-      <tbody id="simulation-table"></tbody>
-    </table>
-  </div>
-
-  <div class="footer-info">
-    <p><b>Pegadaian Mayang Mangurai - Mengatasi Masalah Tanpa Masalah</b><br/>
-    <small>Harga emas Galeri 24 bersifat fluktuatif mengikuti harga pasar dunia.</small></p>
-  </div>
-</div>
-<script src="js/script.js"></script>
-</body>
+    <script src="javascript/script.js"></script>
+  </body>
 </html>

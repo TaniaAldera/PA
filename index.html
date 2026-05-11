@@ -1,255 +1,87 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portal MT — Pegadaian Mayang Mangurai</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pegadaian Mayang Mangurai</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="page-index">
 
-  <body>
-    <!-- HEADER -->
-    <header>
-      <div class="header-inner">
-        <div class="logo-container">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Danantara_Indonesia_%28no_SW%29.svg/3840px-Danantara_Indonesia_%28no_SW%29.svg.png"
-            alt="Logo Danantara"
-          />
-          <div style="width: 1px; height: 20px; background: #ddd"></div>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Pegadaian_logo_%282013%29.svg/1280px-Pegadaian_logo_%282013%29.svg.png"
-            alt="Logo Pegadaian"
-          />
-        </div>
-        <div class="header-badge">Selamat Datang 😊</div>
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="logo-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Danantara_Indonesia_%28no_SW%29.svg/3840px-Danantara_Indonesia_%28no_SW%29.svg.png" alt="Logo Danantara"/>
+        <div class="logo-sep"></div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Pegadaian_logo_%282013%29.svg/1280px-Pegadaian_logo_%282013%29.svg.png" alt="Logo Pegadaian"/>
       </div>
-    </header>
-    <div class="gold-stripe"></div>
-
-    <!-- HERO -->
-    <section class="hero">
-      <h1>Portal Layanan<br /><span>Digital Pegadaian</span></h1>
-      <p>
-        Sistem terpadu untuk simulasi gadai dan cicil emas secara digital,
-        akurat, dan edukatif untuk nasabah Cabang Mayang Mangurai.
-      </p>
-      <div class="hero-meta">
-        <div class="meta-item">
-          <svg class="meta-icon" viewBox="0 0 24 24">
-            <path
-              d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-            />
-          </svg>
-          Mayang Mangurai, Kota Jambi
-        </div>
-        <div class="meta-item">
-          <!-- <svg class="meta-icon" viewBox="0 0 24 24">
-            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-          </svg> -->
-          <!-- <span id="date-display"></span> -->
-        </div>
-      </div>
-    </section>
-
-    <!-- STATS BAR -->
-    <div class="stats-bar">
-      <div class="stats-inner">
-        <div class="stat-item">
-          <div class="stat-value">3</div>
-          <div class="stat-label">Produk Gadai</div>
-        </div>
-        <div class="stat-sep"></div>
-        <div class="stat-item">
-          <div class="stat-value">11</div>
-          <div class="stat-label">Denominasi Emas</div>
-        </div>
-        <div class="stat-sep"></div>
-        <div class="stat-item">
-          <div class="stat-value">3</div>
-          <div class="stat-label">Tarif Angsuran</div>
-        </div>
-        <div class="stat-sep"></div>
-        <div class="stat-item">
-          <div class="stat-value">2</div>
-          <div class="stat-label">Layanan Aktif</div>
-        </div>
-      </div>
+      <div class="header-badge">Selamat Datang 😊</div>
     </div>
+  </header>
+  <div class="gold-stripe"></div>
 
-    <!-- SECTION LABEL -->
-    <div class="section-divider">
-      <span>Pilih Layanan</span>
+  <!-- HERO -->
+  <div class="hero-simple">
+    <div class="branch-pill">
+      <div class="branch-dot"></div>
+      Cabang Mayang Mangurai, Kota Jambi
     </div>
+    <h1>Mau simulasi <span>apa hari ini?</span></h1>
+    <p>Pilih layanan di bawah untuk memulai simulasi secara mandiri</p>
+  </div>
 
-    <!-- CARDS -->
-  <main>
-    <div class="cards-grid">
-      <!-- CARD 1: DIGI-TAKSIR -->
-      <a class="card" href="digi-taksir.html">
-        <div class="card-header">
-          <div class="card-icon icon-green">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"
-                stroke="#006233"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-              <rect
-                x="9"
-                y="3"
-                width="6"
-                height="4"
-                rx="1"
-                stroke="#006233"
-                stroke-width="1.8"
-              />
-              <path
-                d="M9 12h6M9 16h4"
-                stroke="#006233"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-            </svg>
-          </div>
-          <div class="card-titles">
-            <div class="card-tag tag-green">Simulasi & Edukasi</div>
-            <h2>DIGI&#8209;<em style="color: var(--green-mid)">TAKSIR</em></h2>
-          </div>
-        </div>
-        <p class="card-desc">
-          Digital Appraisal & Education System — Simulasi perhitungan taksiran
-          gadai secara real-time untuk berbagai produk layanan Pegadaian.
-        </p>
-        <ul class="card-features">
-          <li>
-            <div class="feat-dot dot-green"></div>
-            Gadai KCA (Kredit Cepat & Aman)
-          </li>
-          <li>
-            <div class="feat-dot dot-green"></div>
-            Gadai Fleksi — sewa modal harian
-          </li>
-          <li>
-            <div class="feat-dot dot-green"></div>
-            Krasida — Kredit Gadai Sistem Angsuran
-          </li>
-        </ul>
-        <div class="card-footer">
-          <div class="card-cta cta-green">
-            Buka Simulasi
-            <div class="cta-arrow arrow-green">
-              <svg viewBox="0 0 14 14" fill="none">
-                <path
-                  d="M3 7h8M8 4l3 3-3 3"
-                  stroke="#006233"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </a>
+  <div class="pick-label">— Pilih Layanan —</div>
 
-      <!-- CARD 2: CICIL EMAS -->
-      <a class="card" href="cicil-emas.html">
-        <div class="card-header">
-          <div class="card-icon icon-gold">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"
-                stroke="#c49a1a"
-                stroke-width="1.7"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-          <div class="card-titles">
-            <div class="card-tag tag-gold">Investasi Emas</div>
-            <h2>Cicil <em style="color: var(--gold)">Emas</em></h2>
-          </div>
-        </div>
-        <p class="card-desc">
-          Kalkulator cicilan emas Pegadaian Galeri 24 — pilih denominasi dan
-          tarif angsuran untuk menghitung cicilan bulanan sesuai kemampuan.
-        </p>
-        <ul class="card-features">
-          <li>
-            <div class="feat-dot dot-gold"></div>
-            Denominasi 0,5 gram s/d 1000 gram
-          </li>
-          <li>
-            <div class="feat-dot dot-gold"></div>
-            Tarif 0,53% · 0,71% · 0,92%
-          </li>
-          <li>
-            <div class="feat-dot dot-gold"></div>
-            Tenor 3 · 6 · 12 · 18 · 24 · 36 bulan
-          </li>
-        </ul>
-        <div class="card-footer">
-          <div class="card-cta cta-gold">
-            Lihat Tabel
-            <div class="cta-arrow arrow-gold">
-              <svg viewBox="0 0 14 14" fill="none">
-                <path
-                  d="M3 7h8M8 4l3 3-3 3"
-                  stroke="#c49a1a"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <!-- ── TRING CTA (selalu tampil) ── -->
-      <div class="tring-cta">
-        <div class="tring-image-container">
-          <img src="https://assets-a1.kompasiana.com/items/album/2025/10/06/1-68e331adc925c446c6513752.png?t=o&v=770.png" alt="Tring App" class = "tring-app-img" />
-        </div>
-        <div class="tring-text">
-          <h3>Transaksi lebih mudah di mana saja?</h3>
-          <p>Download Tring — aplikasi resmi Pegadaian</p>
-        </div>
-        <a href="https://play.google.com/store/apps/details?id=com.pegadaiandigital" 
-          target="_blank" 
-          class="tring-btn">
-          Download
-        </a>
+  <!-- DUA PILIHAN -->
+  <div class="choice-grid">
+    <a class="choice-card card-green" href="digi-taksir.html">
+      <div class="choice-icon icon-bg-green">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke="#006233" stroke-width="1.8" stroke-linecap="round"/>
+          <rect x="9" y="3" width="6" height="4" rx="1" stroke="#006233" stroke-width="1.8"/>
+          <path d="M9 12h6M9 16h4" stroke="#006233" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
       </div>
-  </main>
+      <div class="choice-tag tag-c-green">Simulasi Gadai</div>
+      <h2>Digi&#8209;Taksir</h2>
+      <p>Hitung estimasi uang pinjaman &amp; sewa modal untuk produk KCA, Fleksi, dan Krasida</p>
+      <div class="choice-cta cta-c-green">Buka Simulasi →</div>
+    </a>
 
-    
-    <!-- FOOTER -->
-    <footer>
-      <p>
-        <strong>Pegadaian Cabang Mayang Mangurai</strong> &nbsp;·&nbsp; Kota
-        Jambi &nbsp;·&nbsp; <strong>SOLID DAN JUARA</strong>
-      </p>
-    </footer>
+    <a class="choice-card card-gold" href="cicil-emas.html">
+      <div class="choice-icon icon-bg-gold">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z" stroke="#c49a1a" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="choice-tag tag-c-gold">Investasi Emas</div>
+      <h2>Cicil Emas</h2>
+      <p>Tabel cicilan emas Galeri 24 — pilih denominasi, tenor &amp; tarif angsuran</p>
+      <div class="choice-cta cta-c-gold">Lihat Tabel →</div>
+    </a>
+  </div>
 
-    <script src="js/script.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
-  </body>
+  <!-- TRING CTA -->
+  <div class="tring-wrap">
+    <div class="tring-cta">
+      <div class="tring-image-container">
+        <img src="https://assets-a1.kompasiana.com/items/album/2025/10/06/1-68e331adc925c446c6513752.png?t=o&v=770.png" alt="Tring App" class="tring-app-img"/>
+      </div>
+      <div class="tring-text">
+        <h3>Transaksi lebih mudah di mana saja?</h3>
+        <p>Download Tring — aplikasi resmi Pegadaian</p>
+      </div>
+      <a href="https://play.google.com/store/apps/details?id=com.pegadaiandigital" target="_blank" rel="noopener noreferrer" class="tring-btn">Download</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p><strong>Pegadaian Cabang Mayang Mangurai</strong> &nbsp;·&nbsp; Kota Jambi &nbsp;·&nbsp; <strong>SOLID DAN JUARA</strong></p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
 </html>

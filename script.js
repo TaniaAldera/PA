@@ -6,16 +6,16 @@ let currentMerek = "galeri24";
 let myChart = null;
 
 const STL_PERHIASAN = 2290196;
-const STL_GALERI24 = 2358902;
-const STL_ANTAM = 2290196;
-const STL_UBS = 2290196;
+const STL_GALERI24  = 2358902;
+const STL_ANTAM     = 2290196;
+const STL_UBS       = 2290196;
 
 function getSTLBatangan() {
   const merek = document.getElementById("merekBatangan")
     ? document.getElementById("merekBatangan").value
     : currentMerek;
   if (merek === "galeri24") return STL_GALERI24;
-  if (merek === "antam") return STL_ANTAM;
+  if (merek === "antam")    return STL_ANTAM;
   return STL_UBS;
 }
 
@@ -26,14 +26,12 @@ window.onload = function () {
   }
   updateMerekInfo();
 
-  // Set tanggal - hanya jika elemennya ada (halaman cicil-emas)
   const dateEl = document.getElementById("date-display");
   if (dateEl) {
     const opts = { day: "numeric", month: "long", year: "numeric" };
     dateEl.innerText = "Last Update: " + new Date().toLocaleDateString("id-ID", opts);
   }
 
-  // Render tabel - hanya jika elemennya ada (halaman cicil-emas)
   if (document.getElementById("simulation-table")) {
     renderTable();
   }
@@ -45,12 +43,12 @@ function updateMerekInfo() {
   const el = document.getElementById("infoMerek");
   if (!el) return;
   const merekEl = document.getElementById("merekBatangan");
-  const merek = merekEl ? merekEl.value : "galeri24";
-  const stl = getSTLBatangan();
-  const labels = {
+  const merek   = merekEl ? merekEl.value : "galeri24";
+  const stl     = getSTLBatangan();
+  const labels  = {
     galeri24: "Galeri 24 — STL Khusus (lebih tinggi)",
-    antam: "ANTAM — STL mengikuti perhiasan",
-    ubs: "UBS — STL mengikuti perhiasan",
+    antam:    "ANTAM — STL mengikuti perhiasan",
+    ubs:      "UBS — STL mengikuti perhiasan",
   };
   el.innerText = labels[merek] + " | STL: Rp " + stl.toLocaleString("id-ID") + "/gram";
 }
@@ -67,7 +65,9 @@ function selectProduct(prod) {
   selectedProduct = prod;
   document.getElementById("productSelection").style.display = "none";
   document.getElementById("inputSection").style.display = "block";
-  switchType(currentType);
+  // Inisialisasi item list otomatis saat product dipilih
+  const list = document.getElementById("itemList");
+  if (list && list.children.length === 0) initItems();
   updateTenor();
 }
 
@@ -80,19 +80,23 @@ function goBack() {
 
 function switchMode(mode) {
   currentMode = mode;
-  document.getElementById("btnModeTaksir").classList.toggle("active", mode === "taksir");
-  document.getElementById("btnModeInputUP").classList.toggle("active", mode === "inputUP");
-  document.getElementById("sectionTaksir").classList.toggle("hidden", mode === "inputUP");
-  document.getElementById("sectionInputUP").classList.toggle("hidden", mode === "taksir");
+  document.getElementById("btnModeTaksir").classList.toggle("active",   mode === "taksir");
+  document.getElementById("btnModeInputUP").classList.toggle("active",  mode === "inputUP");
+  document.getElementById("sectionTaksir").classList.toggle("hidden",   mode === "inputUP");
+  document.getElementById("sectionInputUP").classList.toggle("hidden",  mode === "taksir");
 }
 
 function switchType(type) {
   currentType = type;
   document.getElementById("btnPerhiasan").classList.toggle("active", type === "perhiasan");
-  document.getElementById("btnBatangan").classList.toggle("active", type === "batangan");
+  document.getElementById("btnBatangan").classList.toggle("active",  type === "batangan");
   document.getElementById("formPerhiasan").classList.toggle("hidden", type === "batangan");
-  document.getElementById("formBatangan").classList.toggle("hidden", type === "perhiasan");
+  document.getElementById("formBatangan").classList.toggle("hidden",  type === "perhiasan");
   if (type === "batangan") updateMerekInfo();
+  if (type === "perhiasan") {
+    const list = document.getElementById("itemList");
+    if (list && list.children.length === 0) initItems();
+  }
 }
 
 function updateTenor() {
@@ -114,10 +118,16 @@ function updateChart(up, sewaTotal) {
     type: "doughnut",
     data: {
       labels: ["Uang Diterima", "Total Sewa"],
-      datasets: [{ data: [up, sewaTotal], backgroundColor: ["#008444", "#ffcc00"], borderWidth: 2, borderColor: "#ffffff" }],
+      datasets: [{
+        data: [up, sewaTotal],
+        backgroundColor: ["#008444", "#ffcc00"],
+        borderWidth: 2,
+        borderColor: "#ffffff"
+      }],
     },
     options: {
-      responsive: true, maintainAspectRatio: true,
+      responsive: true,
+      maintainAspectRatio: true,
       plugins: {
         legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } },
         tooltip: { callbacks: { label: (c) => c.label + ": Rp " + Math.round(c.raw).toLocaleString("id-ID") } },
@@ -127,43 +137,174 @@ function updateChart(up, sewaTotal) {
   });
 }
 
+/* ================= MULTI-ITEM PERHIASAN ================= */
+let itemCounter = 0;
+let itemsData   = [];
+
+function initItems() {
+  itemsData = [];
+  document.getElementById("itemList").innerHTML = "";
+  itemCounter = 0;
+  addItem();
+  updateTotalTaksiranDisplay();
+}
+
+function addItem() {
+  if (itemCounter >= 10) { alert("Maksimal 10 item perhiasan."); return; }
+  itemCounter++;
+  const id = itemCounter;
+  const karatOptions = [6,8,10,12,14,15,16,17,18,19,20,21,22,23]
+    .map(k => `<option value="${k}"${k===18?" selected":""}>${k} Karat</option>`).join("");
+
+  const html = `
+  <div class="item-row" id="item-${id}">
+    <div class="item-header">
+      <span class="item-label">Item ${id}</span>
+      ${id > 1 ? `<button class="btn-remove-item" onclick="removeItem(${id})">✕ Hapus</button>` : ""}
+    </div>
+    <div class="item-fields">
+      <div class="item-field">
+        <label>Kadar</label>
+        <select id="kadar-${id}" onchange="recalcItem(${id})">${karatOptions}</select>
+      </div>
+      <div class="item-field">
+        <label>Berat (gr)</label>
+        <input type="number" id="berat-${id}" placeholder="0.00" step="0.01"
+          oninput="recalcItem(${id})">
+      </div>
+      <div class="item-field item-field-full">
+        <label>Taksiran</label>
+        <div class="item-taksiran" id="taksiran-${id}">Rp —</div>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById("itemList").insertAdjacentHTML("beforeend", html);
+  itemsData.push({ id, taksiran: 0 });
+  updateTotalTaksiranDisplay();
+  updateBtnAddItem();
+}
+
+function removeItem(id) {
+  document.getElementById(`item-${id}`).remove();
+  itemsData = itemsData.filter(it => it.id !== id);
+  updateTotalTaksiranDisplay();
+  updateBtnAddItem();
+}
+
+function updateBtnAddItem() {
+  const btn = document.getElementById("btnAddItem");
+  if (!btn) return;
+  btn.style.display = itemsData.length >= 10 ? "none" : "block";
+}
+
+function recalcItem(id) {
+  const berat  = parseFloat(document.getElementById(`berat-${id}`).value) || 0;
+  const karat  = parseFloat(document.getElementById(`kadar-${id}`).value);
+  const taksiran = berat > 0 ? berat * (karat / 24) * STL_PERHIASAN : 0;
+
+  const entry = itemsData.find(it => it.id === id);
+  if (entry) entry.taksiran = taksiran;
+
+  const el = document.getElementById(`taksiran-${id}`);
+  el.innerText = taksiran > 0 ? "Rp " + Math.round(taksiran).toLocaleString("id-ID") : "Rp —";
+
+  updateTotalTaksiranDisplay();
+}
+
+function updateTotalTaksiranDisplay() {
+  const total = itemsData.reduce((sum, it) => sum + (it.taksiran || 0), 0);
+  const row   = document.getElementById("rowTotalTaksiran");
+  const el    = document.getElementById("totalTaksiranDisplay");
+  if (!row || !el) return;
+  if (total > 0) {
+    row.style.display = "flex";
+    el.innerText = "Rp " + Math.round(total).toLocaleString("id-ID");
+  } else {
+    row.style.display = "none";
+  }
+}
+
+function getTotalTaksiranMultiItem() {
+  return itemsData.reduce((sum, it) => sum + (it.taksiran || 0), 0);
+}
+
+/* ================= HITUNG TAKSIRAN (UNIFIED) ================= */
 function hitungTaksiran() {
-  const STL = STL_PERHIASAN;
-  let upFinal = 0, taksiran = 0;
-  let tenorVal = parseInt(document.getElementById("tenor").value);
+  const isTaksirMode   = document.getElementById("btnModeTaksir")  && document.getElementById("btnModeTaksir").classList.contains("active");
+  const isPerhiasanType = document.getElementById("btnPerhiasan") && document.getElementById("btnPerhiasan").classList.contains("active");
+  const useMultiItem   = isTaksirMode && isPerhiasanType;
 
-  document.getElementById("beratPerhiasan").classList.remove("input-error");
-  document.getElementById("inputNominalUP").classList.remove("input-error");
+  let upFinal   = 0;
+  let taksiran  = 0;
+  const tenorVal = parseInt(document.getElementById("tenor").value);
 
-  if (currentMode === "taksir") {
-    if (currentType === "perhiasan") {
-      let berat = parseFloat(document.getElementById("beratPerhiasan").value) || 0;
-      let karatValue = parseFloat(document.getElementById("kadar").value);
-      if (berat <= 0 || berat > 1000) {
-        alert("Masukkan berat bersih yang valid (0.01 - 1000 gr)");
-        document.getElementById("beratPerhiasan").classList.add("input-error");
-        return;
+  // ---- Hapus error state ----
+  const nominalEl = document.getElementById("inputNominalUP");
+  if (nominalEl) nominalEl.classList.remove("input-error");
+
+  if (currentMode === "taksir" || useMultiItem) {
+    if (useMultiItem) {
+      // MULTI-ITEM PERHIASAN
+      let valid = true;
+      itemsData.forEach(it => {
+        const berat = parseFloat(document.getElementById(`berat-${it.id}`)?.value) || 0;
+        if (berat <= 0) {
+          alert(`Item ${it.id}: masukkan berat yang valid (> 0 gram)`);
+          valid = false;
+        }
+      });
+      if (!valid) return;
+
+      taksiran = getTotalTaksiranMultiItem();
+      if (taksiran <= 0) { alert("Tidak ada item dengan taksiran valid."); return; }
+
+      // Tampilkan rincian item
+      const rincianSection = document.getElementById("rincianItemSection");
+      const bodyRincian    = document.getElementById("bodyRincianItem");
+      if (rincianSection && bodyRincian) {
+        rincianSection.classList.remove("hidden");
+        bodyRincian.innerHTML = itemsData.map((it, idx) => {
+          const karat = document.getElementById(`kadar-${it.id}`)?.value || "-";
+          const berat = document.getElementById(`berat-${it.id}`)?.value || "-";
+          return `<tr>
+            <td>Item ${idx + 1}</td>
+            <td>${karat} Karat</td>
+            <td>${berat} gr</td>
+            <td>Rp ${Math.round(it.taksiran).toLocaleString("id-ID")}</td>
+          </tr>`;
+        }).join("");
       }
-      taksiran = berat * (karatValue / 24) * STL;
-    } else {
+
+    } else if (currentType === "batangan") {
+      // BATANGAN
       taksiran = parseFloat(document.getElementById("denominasi").value) * getSTLBatangan();
+      const rincianSection = document.getElementById("rincianItemSection");
+      if (rincianSection) rincianSection.classList.add("hidden");
     }
+
     let plafon = selectedProduct === "KRASIDA" ? 0.95 : 0.92;
     if (selectedProduct === "FLEKSI" && tenorVal == 15) plafon = 0.96;
     upFinal = Math.floor(taksiran * plafon / 1000) * 1000;
+
     document.getElementById("rowTaksiran").classList.remove("hidden");
     document.getElementById("titleUP").innerText = "Uang Pinjaman (UP)";
+
   } else {
-    upFinal = parseFloat(document.getElementById("inputNominalUP").value) || 0;
+    // MODE INPUT UP
+    upFinal = parseFloat(nominalEl.value) || 0;
     if (upFinal < 50000) {
       alert("Minimal pinjaman adalah Rp 50.000");
-      document.getElementById("inputNominalUP").classList.add("input-error");
+      nominalEl.classList.add("input-error");
       return;
     }
     document.getElementById("rowTaksiran").classList.add("hidden");
     document.getElementById("titleUP").innerText = "Nominal Pinjaman";
+    const rincianSection = document.getElementById("rincianItemSection");
+    if (rincianSection) rincianSection.classList.add("hidden");
   }
 
+  // ---- Hitung sewa ----
   let sewaDesc = "", estimasiSewa = 0, unitWaktu = "";
   let dt = new Date(), totalSewaUntukGrafik = 0;
 
@@ -185,6 +326,7 @@ function hitungTaksiran() {
       htmlTabel += `<tr><td>Ke-${i}</td><td>${i * 15}</td><td>Rp ${Math.round(sewaAkumulasi).toLocaleString("id-ID")}</td></tr>`;
     }
     document.getElementById("bodyTabelKCA").innerHTML = htmlTabel;
+
   } else if (selectedProduct === "FLEKSI") {
     sewaDesc = "0.07% / Hari";
     estimasiSewa = upFinal * 0.0007;
@@ -192,10 +334,11 @@ function hitungTaksiran() {
     dt.setDate(dt.getDate() + tenorVal);
     document.getElementById("lblSewaNominal").innerText = "Estimasi Sewa:";
     totalSewaUntukGrafik = estimasiSewa * tenorVal;
+
   } else if (selectedProduct === "KRASIDA") {
     let tarifKrasida = 0.0125;
     if (tenorVal === 18 || tenorVal === 36) tarifKrasida = 0.013;
-    else if (tenorVal === 48) tarifKrasida = 0.014;
+    else if (tenorVal === 48)               tarifKrasida = 0.014;
     sewaDesc = (tarifKrasida * 100).toFixed(2) + "% / Bulan";
     estimasiSewa = upFinal / tenorVal + upFinal * tarifKrasida;
     unitWaktu = " / Bulan";
@@ -204,11 +347,13 @@ function hitungTaksiran() {
     totalSewaUntukGrafik = upFinal * tarifKrasida * tenorVal;
   }
 
-  document.getElementById("resUP").innerText = "Rp " + upFinal.toLocaleString("id-ID");
-  document.getElementById("resTaksiran").innerText = "Rp " + Math.round(taksiran).toLocaleString("id-ID");
-  document.getElementById("resSewaDesc").innerText = sewaDesc;
+  // ---- Tampilkan hasil ----
+  document.getElementById("resUP").innerText        = "Rp " + upFinal.toLocaleString("id-ID");
+  document.getElementById("resTaksiran").innerText   = "Rp " + Math.round(taksiran).toLocaleString("id-ID");
+  document.getElementById("resSewaDesc").innerText   = sewaDesc;
   document.getElementById("resSewaNominal").innerText = "± Rp " + Math.round(estimasiSewa).toLocaleString("id-ID") + unitWaktu;
-  document.getElementById("resJatuhTempo").innerText = dt.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+  document.getElementById("resJatuhTempo").innerText  = dt.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+
   document.getElementById("panelHasil").style.display = "block";
   document.getElementById("panelHasil").scrollIntoView({ behavior: "smooth" });
 
@@ -228,14 +373,14 @@ function resetFeedback() {
 
 /* ================= CICIL EMAS ================= */
 const hargaEmas = {
-  0.5: 1486000, 1: 2833000, 2: 5597000, 5: 13889000,
-  10: 27704000, 25: 68889000, 50: 137668000, 100: 275200000,
-  250: 686310000, 500: 1372618000, 1000: 2745235000,
+  0.5: 1486000,    1: 2833000,    2: 5597000,    5: 13889000,
+  10:  27704000,   25: 68889000,  50: 137668000, 100: 275200000,
+  250: 686310000,  500: 1372618000, 1000: 2745235000,
 };
 
 let currentMargin = 0.0092;
-const adminFee = 50000;
-const dpRate = 0.15;
+const adminFee    = 50000;
+const dpRate      = 0.15;
 let customDPRupiah = 0;
 
 function formatIDR(num) { return Math.floor(num).toLocaleString("id-ID"); }
@@ -255,24 +400,28 @@ function handleDPInput(val) {
 }
 
 function renderTable() {
-  const tbody = document.getElementById("simulation-table");
-  if (!tbody) return; // tidak crash di halaman yang tidak punya tabel ini
+  const tbody    = document.getElementById("simulation-table");
+  if (!tbody) return;
   const infoText = document.getElementById("dp-info-text");
   tbody.innerHTML = "";
+
   const denoms = [0.5, 1, 2, 5, 10, 25, 50, 100, 250, 500, 1000];
   denoms.forEach((d) => {
-    const tunai = hargaEmas[d];
+    const tunai     = hargaEmas[d];
     const dpMinimal = tunai * dpRate;
-    let dpDipakai = customDPRupiah > dpMinimal ? customDPRupiah : dpMinimal;
-    const totalDP = dpDipakai + adminFee;
-    const pinjaman = tunai - dpDipakai;
+    let   dpDipakai = customDPRupiah > dpMinimal ? customDPRupiah : dpMinimal;
+    const totalDP   = dpDipakai + adminFee;
+    const pinjaman  = tunai - dpDipakai;
     const bungaBulan = tunai * currentMargin;
     const row = document.createElement("tr");
     let html = `<td>${d >= 1 ? d : "0,5"} Gram</td><td>${formatIDR(totalDP)}</td><td class="val-pinjaman">${formatIDR(pinjaman)}</td>`;
-    [3, 6, 12, 18, 24, 36].forEach((tenor) => { html += `<td>${formatIDR(pinjaman / tenor + bungaBulan)}</td>`; });
+    [3, 6, 12, 18, 24, 36].forEach((tenor) => {
+      html += `<td>${formatIDR(pinjaman / tenor + bungaBulan)}</td>`;
+    });
     row.innerHTML = html;
     tbody.appendChild(row);
   });
+
   if (infoText) {
     infoText.innerText = customDPRupiah > 0
       ? `Menggunakan DP Rp ${formatIDR(customDPRupiah)} (atau minimal 15% per item)`
@@ -282,12 +431,12 @@ function renderTable() {
 
 /* ================= EXPORT PDF ================= */
 async function exportPDF() {
-  const el = document.getElementById("panelHasil");
+  const el     = document.getElementById("panelHasil");
   const canvas = await html2canvas(el, { scale: 2, useCORS: true });
-  const img = canvas.toDataURL("image/png");
+  const img    = canvas.toDataURL("image/png");
   const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF("p", "mm", "a4");
-  const width = pdf.internal.pageSize.getWidth();
+  const pdf    = new jsPDF("p", "mm", "a4");
+  const width  = pdf.internal.pageSize.getWidth();
   pdf.addImage(img, "PNG", 0, 0, width, (canvas.height * width) / canvas.width);
   pdf.save("hasil-digi-taksir.pdf");
 }
@@ -295,11 +444,11 @@ async function exportPDF() {
 /* ================= SAVE HISTORY ================= */
 function saveHistory() {
   let data = {
-    waktu: new Date().toLocaleString("id-ID"),
-    produk: selectedProduct,
-    totalTaksiran: document.getElementById("resTotalTaksiran")?.innerText,
-    up: document.getElementById("resUP")?.innerText,
-    tenor: document.getElementById("tenor")?.value,
+    waktu:         new Date().toLocaleString("id-ID"),
+    produk:        selectedProduct,
+    totalTaksiran: document.getElementById("resTaksiran")?.innerText,
+    up:            document.getElementById("resUP")?.innerText,
+    tenor:         document.getElementById("tenor")?.value,
   };
   let history = JSON.parse(localStorage.getItem("dg_history") || "[]");
   history.unshift(data);
@@ -310,223 +459,4 @@ function saveHistory() {
 /* ================= TRING ================= */
 function openTringApp() {
   window.open("https://play.google.com/store/apps/details?id=com.pegadaiandigital", "_blank");
-}
-
-/* ================= MULTI-ITEM PERHIASAN ================= */
-let itemCounter = 0;
-let itemsData = []; // simpan data setiap item
-
-// Inisialisasi: buat 1 item otomatis saat form perhiasan muncul
-function initItems() {
-    itemsData = [];
-    document.getElementById('itemList').innerHTML = '';
-    itemCounter = 0;
-    addItem();
-    updateTotalTaksiranDisplay();
-}
-
-function addItem() {
-    itemCounter++;
-    const id = itemCounter;
-    const karatOptions = [6,8,10,12,14,15,16,17,18,19,20,21,22,23]
-        .map(k => `<option value="${k}"${k===18?' selected':''}>${k} Karat</option>`).join('');
-
-    const html = `
-    <div class="item-row" id="item-${id}">
-        <div class="item-header">
-            <span class="item-label">Item ${id}</span>
-            ${id > 1 ? `<button class="btn-remove-item" onclick="removeItem(${id})">✕ Hapus</button>` : ''}
-        </div>
-        <div class="item-fields">
-            <div class="item-field">
-                <label>Kadar</label>
-                <select id="kadar-${id}" onchange="recalcItem(${id})">
-                    ${karatOptions}
-                </select>
-            </div>
-            <div class="item-field">
-                <label>Berat (gr)</label>
-                <input type="number" id="berat-${id}" placeholder="0.00" step="0.01"
-                    oninput="recalcItem(${id})">
-            </div>
-            <div class="item-field item-field-full">
-                <label>Taksiran</label>
-                <div class="item-taksiran" id="taksiran-${id}">Rp —</div>
-            </div>
-        </div>
-    </div>`;
-
-    document.getElementById('itemList').insertAdjacentHTML('beforeend', html);
-    itemsData.push({ id, taksiran: 0 });
-    updateTotalTaksiranDisplay();
-}
-
-function removeItem(id) {
-    document.getElementById(`item-${id}`).remove();
-    itemsData = itemsData.filter(it => it.id !== id);
-    updateTotalTaksiranDisplay();
-}
-
-function recalcItem(id) {
-    const berat = parseFloat(document.getElementById(`berat-${id}`).value) || 0;
-    const karat = parseFloat(document.getElementById(`kadar-${id}`).value);
-    const taksiran = berat > 0 ? berat * (karat / 24) * STL_PERHIASAN : 0;
-
-    const entry = itemsData.find(it => it.id === id);
-    if (entry) entry.taksiran = taksiran;
-
-    const el = document.getElementById(`taksiran-${id}`);
-    el.innerText = taksiran > 0 ? 'Rp ' + Math.round(taksiran).toLocaleString('id-ID') : 'Rp —';
-
-    updateTotalTaksiranDisplay();
-}
-
-function updateTotalTaksiranDisplay() {
-    const total = itemsData.reduce((sum, it) => sum + (it.taksiran || 0), 0);
-    const row = document.getElementById('rowTotalTaksiran');
-    const el  = document.getElementById('totalTaksiranDisplay');
-    if (!row || !el) return;
-    if (total > 0) {
-        row.style.display = 'flex';
-        el.innerText = 'Rp ' + Math.round(total).toLocaleString('id-ID');
-    } else {
-        row.style.display = 'none';
-    }
-}
-
-function getTotalTaksiranMultiItem() {
-    return itemsData.reduce((sum, it) => sum + (it.taksiran || 0), 0);
-}
-
-// Override switchType supaya initItems dipanggil saat pindah ke perhiasan
-const _origSwitchType = switchType;
-function switchType(type) {
-    _origSwitchType(type);
-    if (type === 'perhiasan') {
-        // init item list jika belum ada
-        const list = document.getElementById('itemList');
-        if (list && list.children.length === 0) initItems();
-    }
-}
-
-// Override selectProduct supaya initItems dipanggil otomatis
-const _origSelectProduct = selectProduct;
-function selectProduct(prod) {
-    _origSelectProduct(prod);
-    const list = document.getElementById('itemList');
-    if (list && list.children.length === 0) initItems();
-}
-
-// Override hitungTaksiran supaya pakai total multi-item untuk perhiasan
-const _origHitungTaksiran = hitungTaksiran;
-function hitungTaksiran() {
-    // Kalau mode taksir & jenis perhiasan → pakai multi-item
-    const modeEl  = document.getElementById('btnModeTaksir');
-    const typeEl  = document.getElementById('btnPerhiasan');
-    const isMulti = modeEl && modeEl.classList.contains('active') &&
-                    typeEl && typeEl.classList.contains('active');
-
-    if (!isMulti) {
-        _origHitungTaksiran();
-        return;
-    }
-
-    // Validasi semua item
-    const list = document.getElementById('itemList');
-    if (!list) { _origHitungTaksiran(); return; }
-
-    let valid = true;
-    itemsData.forEach(it => {
-        const berat = parseFloat(document.getElementById(`berat-${it.id}`)?.value) || 0;
-        if (berat <= 0) {
-            alert(`Item ${it.id}: masukkan berat yang valid (> 0 gram)`);
-            valid = false;
-        }
-    });
-    if (!valid) return;
-
-    const totalTaksiran = getTotalTaksiranMultiItem();
-    if (totalTaksiran <= 0) {
-        alert('Tidak ada item dengan taksiran valid.');
-        return;
-    }
-
-    const tenorVal    = parseInt(document.getElementById('tenor').value);
-    let plafon        = selectedProduct === 'KRASIDA' ? 0.95 : 0.92;
-    if (selectedProduct === 'FLEKSI' && tenorVal == 15) plafon = 0.96;
-
-    const upFinal = Math.floor(totalTaksiran * plafon / 1000) * 1000;
-
-    // Tampilkan rincian item
-    const rincianSection = document.getElementById('rincianItemSection');
-    const bodyRincian    = document.getElementById('bodyRincianItem');
-    if (rincianSection && bodyRincian) {
-        rincianSection.classList.remove('hidden');
-        bodyRincian.innerHTML = itemsData.map((it, idx) => {
-            const karat = document.getElementById(`kadar-${it.id}`)?.value || '-';
-            const berat = document.getElementById(`berat-${it.id}`)?.value || '-';
-            return `<tr>
-                <td>Item ${idx + 1}</td>
-                <td>${karat} Karat</td>
-                <td>${berat} gr</td>
-                <td>Rp ${Math.round(it.taksiran).toLocaleString('id-ID')}</td>
-            </tr>`;
-        }).join('');
-    }
-
-    // Hitung sewa & tampilkan hasil (sama dengan logika asli)
-    let sewaDesc = '', estimasiSewa = 0, unitWaktu = '';
-    let dt = new Date(), totalSewaUntukGrafik = 0;
-
-    document.getElementById('sectionDetailKCA').classList.add('hidden');
-    document.getElementById('bodyTabelKCA').innerHTML = '';
-
-    if (selectedProduct === 'KCA') {
-        let tarifKCA = upFinal > 20100000 ? 0.011 : 0.012;
-        sewaDesc = (tarifKCA * 100).toFixed(1) + '% / 15 Hari';
-        estimasiSewa = upFinal * tarifKCA;
-        unitWaktu = ' / 15 Hari';
-        dt.setDate(dt.getDate() + 120);
-        document.getElementById('lblSewaNominal').innerText = 'Estimasi Sewa (Per 15 Hari):';
-        totalSewaUntukGrafik = estimasiSewa * 8;
-        document.getElementById('sectionDetailKCA').classList.remove('hidden');
-        let htmlTabel = '';
-        for (let i = 1; i <= 8; i++) {
-            let sewaAkumulasi = upFinal * tarifKCA * i;
-            htmlTabel += `<tr><td>Ke-${i}</td><td>${i*15}</td><td>Rp ${Math.round(sewaAkumulasi).toLocaleString('id-ID')}</td></tr>`;
-        }
-        document.getElementById('bodyTabelKCA').innerHTML = htmlTabel;
-    } else if (selectedProduct === 'FLEKSI') {
-        sewaDesc = '0.07% / Hari';
-        estimasiSewa = upFinal * 0.0007;
-        unitWaktu = ' / Hari';
-        dt.setDate(dt.getDate() + tenorVal);
-        document.getElementById('lblSewaNominal').innerText = 'Estimasi Sewa:';
-        totalSewaUntukGrafik = estimasiSewa * tenorVal;
-    } else if (selectedProduct === 'KRASIDA') {
-        let tarifKrasida = 0.0125;
-        if (tenorVal === 18 || tenorVal === 36) tarifKrasida = 0.013;
-        else if (tenorVal === 48) tarifKrasida = 0.014;
-        sewaDesc = (tarifKrasida * 100).toFixed(2) + '% / Bulan';
-        estimasiSewa = upFinal / tenorVal + upFinal * tarifKrasida;
-        unitWaktu = ' / Bulan';
-        dt.setMonth(dt.getMonth() + tenorVal);
-        document.getElementById('lblSewaNominal').innerText = 'Angsuran Tetap:';
-        totalSewaUntukGrafik = upFinal * tarifKrasida * tenorVal;
-    }
-
-    document.getElementById('titleUP').innerText    = 'Uang Pinjaman (UP)';
-    document.getElementById('resUP').innerText       = 'Rp ' + upFinal.toLocaleString('id-ID');
-    document.getElementById('resTaksiran').innerText = 'Rp ' + Math.round(totalTaksiran).toLocaleString('id-ID');
-    document.getElementById('rowTaksiran').classList.remove('hidden');
-    document.getElementById('resSewaDesc').innerText  = sewaDesc;
-    document.getElementById('resSewaNominal').innerText = '± Rp ' + Math.round(estimasiSewa).toLocaleString('id-ID') + unitWaktu;
-    document.getElementById('resJatuhTempo').innerText  = dt.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
-
-    document.getElementById('panelHasil').style.display = 'block';
-    document.getElementById('panelHasil').scrollIntoView({ behavior:'smooth' });
-
-    updateChart(upFinal, totalSewaUntukGrafik);
-    updateCounter();
-    resetFeedback();
 }

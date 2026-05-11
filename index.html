@@ -1,54 +1,378 @@
+ 
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digi-Taksir - Pegadaian</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header class="header">
-        <div class="logo-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Pegadaian_logo.svg" alt="Logo Pegadaian">
-        </div>
-        <div class="header-title">
-            <h2>DIGI<span>TAKSIR</span></h2>
-            <p>Solusi Simulasi Gadai Cepat & Akurat</p>
-        </div>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pegadaian Mayang Mangurai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg);
+      }
 
-    <div class="container">
-        <div class="visitor-counter">
-            <span>👁️ Pengunjung: <span id="visitorCount">0</span></span>
-        </div>
+      /* HEADER */
+      header {
+        background: var(--green-mid);
+        padding: 0 1.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      header::before {
+        content: "";
+        position: absolute;
+        top: -40px; right: -60px;
+        width: 200px; height: 200px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.04);
+        pointer-events: none;
+      }
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 0;
+        position: relative;
+        z-index: 1;
+      }
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: white;
+        padding: 6px 12px;
+        border-radius: 8px;
+        margin: 0;
+      }
+      .logo-container img { height: 26px; }
+      .header-badge {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.25);
+        color: rgba(255,255,255,0.9);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-family: "DM Sans", sans-serif;
+      }
+      .gold-stripe {
+        height: 4px;
+        background: linear-gradient(90deg, var(--gold) 0%, #f0d060 50%, var(--gold) 100%);
+      }
 
-        <div class="product-card" onclick="location.href='digi-taksir.html'">
-            <h3>💎 Simulasi Gadai (KCA/Krasida)</h3>
-            <p>Hitung nilai taksiran emas & perhiasan serta simulasi sewa modal secara instan.</p>
-        </div>
+      /* HERO */
+      .hero-simple {
+        text-align: center;
+        padding: 2.5rem 1.5rem 1rem;
+      }
+      .branch-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--green-light);
+        border: 1px solid #b2d5bf;
+        color: var(--green-dark);
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-family: "DM Sans", sans-serif;
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
+      .branch-dot {
+        width: 6px; height: 6px;
+        background: var(--green-mid);
+        border-radius: 50%;
+      }
+      .hero-simple h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.6rem, 5vw, 2.2rem);
+        color: var(--green-dark);
+        margin: 0 0 0.5rem;
+        line-height: 1.2;
+      }
+      .hero-simple h1 span { color: var(--gold); }
+      .hero-simple p {
+        font-family: "DM Sans", sans-serif;
+        color: var(--text-mid);
+        font-size: 14px;
+        font-weight: 300;
+        margin: 0 auto;
+        max-width: 360px;
+      }
 
-        <div class="product-card" onclick="location.href='cicil-emas.html'">
-            <h3>📀 Simulasi Cicil Emas</h3>
-            <p>Rencanakan masa depan dengan investasi emas batangan (Galeri 24/ANTAM).</p>
-        </div>
+      /* PICK LABEL */
+      .pick-label {
+        text-align: center;
+        font-family: "DM Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-light);
+        margin: 1.2rem 0 1rem;
+      }
 
-        <div class="feedback-section">
-            <p style="font-size: 12px; margin-bottom: 8px; font-weight: bold;">Beri Rating Aplikasi:</p>
-            <div class="star-rating" id="mainRating">
-                <span onclick="setRating(1)">★</span>
-                <span onclick="setRating(2)">★</span>
-                <span onclick="setRating(3)">★</span>
-                <span onclick="setRating(4)">★</span>
-                <span onclick="setRating(5)">★</span>
-            </div>
-        </div>
-    </div>
+      /* CHOICE CARDS */
+      .choice-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        max-width: 660px;
+        margin: 0 auto;
+        padding: 0 1.2rem 1.5rem;
+      }
+      @media (max-width: 480px) {
+        .choice-grid { grid-template-columns: 1fr; }
+      }
 
-    <script src="script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            updateVisitorCount();
-        });
-    </script>
-</body>
+      .choice-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        text-decoration: none;
+        color: inherit;
+        background: var(--white);
+        border-radius: 20px;
+        padding: 2rem 1.2rem 1.5rem;
+        border: 2px solid #dce8d9;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        gap: 0.7rem;
+        min-height: 210px;
+      }
+      .choice-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 36px rgba(0,80,40,0.13);
+      }
+      .choice-card.card-green:hover { border-color: var(--green-mid); }
+      .choice-card.card-gold:hover  { border-color: var(--gold); }
+
+      .choice-icon {
+        width: 60px; height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .icon-bg-green { background: var(--green-light); }
+      .icon-bg-gold  { background: var(--gold-light); }
+      .choice-icon svg { width: 28px; height: 28px; }
+
+      .choice-tag {
+        font-family: "DM Sans", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+      }
+      .tag-c-green { color: var(--green-mid); }
+      .tag-c-gold  { color: var(--gold); }
+
+      .choice-card h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin: 0;
+        line-height: 1.2;
+      }
+      .choice-card p {
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        color: var(--text-mid);
+        font-weight: 300;
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      .choice-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 12.5px;
+        font-weight: 600;
+        padding: 7px 16px;
+        border-radius: 30px;
+        margin-top: 0.2rem;
+        transition: background 0.2s, color 0.2s;
+      }
+      .cta-c-green { background: var(--green-light); color: var(--green-dark); }
+      .cta-c-gold  { background: var(--gold-light); color: #7a5c0a; }
+      .choice-card:hover .cta-c-green { background: var(--green-mid); color: white; }
+      .choice-card:hover .cta-c-gold  { background: var(--gold); color: white; }
+
+      /* TRING */
+      .tring-wrap {
+        max-width: 660px;
+        margin: 0 auto;
+        padding: 0 1.2rem 1.8rem;
+      }
+      .tring-cta {
+        background: linear-gradient(135deg, #006233 0%, #008444 100%);
+        border-radius: 14px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(0,80,40,0.15);
+        position: relative;
+        overflow: visible;
+        border: 1px solid rgba(255,255,255,0.1);
+      }
+      .tring-cta::before {
+        content: "";
+        position: absolute;
+        top: -15px; right: -15px;
+        width: 70px; height: 70px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .tring-image-container {
+        flex-shrink: 0;
+        background: #fff;
+        padding: 7px;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      }
+      .tring-app-img { width: 36px; height: 30px; object-fit: contain; }
+      .tring-text { flex: 1; }
+      .tring-text h3 {
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px; font-weight: 700;
+        margin: 0 0 2px; color: #fff;
+      }
+      .tring-text p {
+        font-family: "DM Sans", sans-serif;
+        font-size: 11px; color: rgba(255,255,255,0.8); margin: 0;
+      }
+      .tring-btn {
+        background: #ffcc00;
+        color: #004d26;
+        border: none;
+        padding: 9px 18px;
+        border-radius: 30px;
+        font-family: "DM Sans", sans-serif;
+        font-weight: 800; font-size: 13px;
+        cursor: pointer;
+        white-space: nowrap;
+        text-decoration: none;
+        display: inline-block;
+        position: relative; z-index: 10;
+        pointer-events: auto;
+        transition: background 0.2s, transform 0.2s;
+        box-shadow: 0 4px 12px rgba(255,204,0,0.3);
+      }
+      .tring-btn:hover { background: #fff; transform: translateY(-2px); }
+
+      /* FOOTER */
+      footer {
+        background: #004d26;
+        padding: 1.4rem 1.5rem;
+        color: white;
+        text-align: center;
+        margin-top: auto;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+      }
+      footer p { margin: 0; }
+      footer strong { color: #ffcc00; }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <div class="logo-container">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Danantara_Indonesia_%28no_SW%29.svg/3840px-Danantara_Indonesia_%28no_SW%29.svg.png" alt="Logo Danantara"/>
+          <div style="width:1px;height:18px;background:#ddd;"></div>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Pegadaian_logo_%282013%29.svg/1280px-Pegadaian_logo_%282013%29.svg.png" alt="Logo Pegadaian"/>
+        </div>
+        <div class="header-badge">Selamat Datang 😊</div>
+      </div>
+    </header>
+    <div class="gold-stripe"></div>
+
+    <!-- HERO -->
+    <div class="hero-simple">
+      <div class="branch-pill">
+        <div class="branch-dot"></div>
+        Cabang Mayang Mangurai, Kota Jambi
+      </div>
+      <h1>Mau simulasi <span>apa hari ini?</span></h1>
+      <p>Pilih layanan di bawah untuk memulai simulasi secara mandiri</p>
+    </div>
+
+    <div class="pick-label">— Pilih Layanan —</div>
+
+    <!-- DUA PILIHAN -->
+    <div class="choice-grid">
+
+      <a class="choice-card card-green" href="digi-taksir.html">
+        <div class="choice-icon icon-bg-green">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"
+              stroke="#006233" stroke-width="1.8" stroke-linecap="round"/>
+            <rect x="9" y="3" width="6" height="4" rx="1" stroke="#006233" stroke-width="1.8"/>
+            <path d="M9 12h6M9 16h4" stroke="#006233" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="choice-tag tag-c-green">Simulasi Gadai</div>
+        <h2>Digi&#8209;Taksir</h2>
+        <p>Hitung estimasi uang pinjaman & sewa modal untuk produk KCA, Fleksi, dan Krasida</p>
+        <div class="choice-cta cta-c-green">Buka Simulasi →</div>
+      </a>
+
+      <a class="choice-card card-gold" href="cicil-emas.html">
+        <div class="choice-icon icon-bg-gold">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"
+              stroke="#c49a1a" stroke-width="1.7" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="choice-tag tag-c-gold">Investasi Emas</div>
+        <h2>Cicil Emas</h2>
+        <p>Tabel cicilan emas Galeri 24 — pilih denominasi, tenor & tarif angsuran</p>
+        <div class="choice-cta cta-c-gold">Lihat Tabel →</div>
+      </a>
+
+    </div>
+
+    <!-- TRING CTA -->
+    <div class="tring-wrap">
+      <div class="tring-cta">
+        <div class="tring-image-container">
+          <img src="https://assets-a1.kompasiana.com/items/album/2025/10/06/1-68e331adc925c446c6513752.png?t=o&v=770.png"
+            alt="Tring App" class="tring-app-img"/>
+        </div>
+        <div class="tring-text">
+          <h3>Transaksi lebih mudah di mana saja?</h3>
+          <p>Download Tring — aplikasi resmi Pegadaian</p>
+        </div>
+        <a href="https://play.google.com/store/apps/details?id=com.pegadaiandigital"
+          target="_blank" rel="noopener noreferrer" class="tring-btn">
+          Download
+        </a>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>
+        <strong>Pegadaian Cabang Mayang Mangurai</strong> &nbsp;·&nbsp;
+        Kota Jambi &nbsp;·&nbsp; <strong>SOLID DAN JUARA</strong>
+      </p>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
 </html>

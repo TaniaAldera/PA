@@ -1,9 +1,8 @@
 /* ============================================================
    1. GLOBAL VARIABLES & RESET 
-   (Dikonsolidasikan agar tema warna konsisten di semua halaman)
    ============================================================ */
 :root {
-    /* --- DIUBAH: Penyatuan Palette Warna Brand & Premium --- */
+    /* DigiTaksir & Global */
     --p-green: #008444;
     --p-gold: #ffcc00;
     --p-dark: #005a2e;
@@ -15,6 +14,17 @@
     --white: #ffffff;
     --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
+
+    /* Index page variables */
+    --green-dark:  #004d26;
+    --green-mid:   #008444;
+    --green-light: #e8f5ee;
+    --gold:        #c49a1a;
+    --gold-light:  #fdf6dc;
+    --bg:          #f3f7f4;
+    --text-dark:   #1a2e20;
+    --text-mid:    #4a6355;
+    --text-light:  #7a9585;
 }
 
 * {
@@ -28,14 +38,12 @@ body {
     background-color: var(--bg-light);
     color: var(--text-main);
     line-height: 1.6;
-    /* --- DIUBAH: Memastikan background image tetap smooth jika ada --- */
     background-attachment: fixed;
     background-size: cover;
 }
 
 /* ============================================================
    2. LAYOUT UTAMA & CONTAINER 
-   (Dioptimalkan untuk Mobile-First)
    ============================================================ */
 .container {
     width: 92%;
@@ -45,22 +53,106 @@ body {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
     box-shadow: var(--shadow-soft);
-    /* --- DIUBAH: Efek Glassmorphism agar terlihat modern saat deploy --- */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* --- DIUBAH: Memastikan Header Dashboard tidak tertutup konten --- */
+/* ============================================================
+   3. HEADER — DIGI-TAKSIR & CICIL EMAS
+   ============================================================ */
 .header {
+    background: var(--p-dark);
+    padding: 0 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 60px;
     position: relative;
     z-index: 10;
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    flex-wrap: wrap;
+}
+
+.header .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+/* FIX UTAMA: Batasi ukuran logo agar tidak kebesaran */
+.header .logo-container img {
+    height: 22px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.header-title {
+    flex: 1;
+    text-align: center;
+    padding: 0 8px;
+}
+
+.header-title h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: white;
+    margin: 0;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.header-title h2 span {
+    color: var(--p-gold);
+}
+
+.header-title p {
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.header-right {
+    flex-shrink: 0;
+}
+
+.btn-dashboard {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.btn-dashboard:hover {
+    background: white;
+    color: var(--p-dark);
+}
+
+/* Gold stripe bawah header */
+.header::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--p-gold) 0%, #f0d060 50%, var(--p-gold) 100%);
 }
 
 /* ============================================================
-   3. KOMPONEN FORM & INPUT 
-   (Diperbaiki agar nyaman di layar sentuh HP)
+   4. KOMPONEN FORM & INPUT 
    ============================================================ */
 .input-group {
     margin-bottom: 15px;
@@ -75,14 +167,14 @@ label {
     font-size: 0.9rem;
 }
 
-/* --- DIUBAH: Ukuran font 16px mencegah auto-zoom di browser iPhone --- */
 input, select {
     width: 100%;
     padding: 12px 15px;
     border: 1.5px solid #e0e0e0;
     border-radius: 12px;
-    font-size: 16px; 
+    font-size: 16px;
     transition: var(--transition);
+    background: white;
 }
 
 input:focus, select:focus {
@@ -91,8 +183,13 @@ input:focus, select:focus {
     box-shadow: 0 0 0 3px rgba(0, 132, 68, 0.1);
 }
 
+.input-error {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
 /* ============================================================
-   4. TOMBOL & AKSI
+   5. TOMBOL & AKSI
    ============================================================ */
 .btn {
     width: 100%;
@@ -119,15 +216,387 @@ input:focus, select:focus {
     transform: translateY(-2px);
 }
 
-/* --- DITAMBAHKAN: Efek klik pada tombol --- */
 .btn:active {
     transform: scale(0.98);
 }
 
+.btn-hitung {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--p-green), var(--p-dark));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 10px;
+}
+
+.btn-hitung:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,132,68,0.3);
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: 1.5px solid #ccc;
+    color: var(--p-dark);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: var(--transition);
+}
+
+.back-btn:hover {
+    border-color: var(--p-green);
+    color: var(--p-green);
+}
+
+.btn-add-item {
+    width: 100%;
+    padding: 10px;
+    background: var(--green-light, #e8f5ee);
+    color: var(--p-green);
+    border: 2px dashed var(--p-green);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 8px;
+}
+
+.btn-add-item:hover {
+    background: var(--p-green);
+    color: white;
+}
+
+.btn-remove-item {
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-remove-item:hover {
+    background: #dc2626;
+    color: white;
+}
+
 /* ============================================================
-   5. TABEL RESPONSIF (Cicil Emas)
+   6. PRODUCT CARDS (Pilih Produk)
    ============================================================ */
-/* --- DIUBAH: Menangani tabel yang sering "melebar" keluar layar --- */
+.product-card {
+    background: white;
+    border: 2px solid #e0ece5;
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--p-gold);
+    border-radius: 4px 0 0 4px;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.product-card:hover {
+    border-color: var(--p-green);
+    box-shadow: 0 8px 24px rgba(0,132,68,0.12);
+    transform: translateY(-3px);
+}
+
+.product-card:hover::before {
+    opacity: 1;
+}
+
+.product-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--p-dark);
+    margin: 0 0 6px;
+}
+
+.product-card p {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   7. CARD FORM (Input Section)
+   ============================================================ */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    margin-bottom: 16px;
+}
+
+/* ============================================================
+   8. MODE & TYPE SELECTORS
+   ============================================================ */
+.mode-selector, .type-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.mode-btn, .type-btn {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #666;
+    transition: var(--transition);
+    background: #f9f9f9;
+}
+
+.mode-btn.active, .type-btn.active {
+    background: var(--p-green);
+    color: white;
+    border-color: var(--p-green);
+}
+
+.mode-btn:hover:not(.active), .type-btn:hover:not(.active) {
+    border-color: var(--p-green);
+    color: var(--p-green);
+}
+
+/* ============================================================
+   9. MULTI-ITEM PERHIASAN
+   ============================================================ */
+.item-row {
+    background: #f9fdf9;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--p-gold);
+    border: 1px solid #e0ece5;
+    border-left: 4px solid var(--p-gold);
+}
+
+.item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.item-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--p-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.item-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.item-field label {
+    font-size: 11px;
+    margin-bottom: 4px;
+    color: #666;
+    font-weight: 600;
+}
+
+.item-field input, .item-field select {
+    padding: 9px 12px;
+    font-size: 14px;
+}
+
+.item-field-full {
+    grid-column: 1 / -1;
+}
+
+.item-taksiran {
+    background: var(--green-light, #e8f5ee);
+    color: var(--p-green);
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.total-taksiran-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f0faf4;
+    border: 1px solid #b2d5bf;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--p-dark);
+}
+
+.merek-info {
+    font-size: 11px;
+    color: #666;
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 7px 10px;
+    margin-bottom: 10px;
+    margin-top: -4px;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   10. RESULT PANEL
+   ============================================================ */
+.result-panel {
+    display: none;
+    background: white;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 30px rgba(0,132,68,0.12);
+    border: 1px solid #d4ead9;
+    margin-top: 16px;
+}
+
+.up-val {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--p-green);
+    text-align: center;
+    margin: 8px 0 16px;
+    letter-spacing: -0.5px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+    color: #444;
+}
+
+.info-row span:last-child {
+    font-weight: 700;
+    color: var(--p-dark);
+}
+
+.table-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--p-dark);
+    margin: 14px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kca-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    min-width: unset;
+}
+
+.kca-table th {
+    background: var(--p-dark);
+    color: white;
+    padding: 8px 10px;
+    font-size: 11px;
+}
+
+.kca-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: center;
+}
+
+.kca-table tr:hover td {
+    background: #f9fdf9;
+}
+
+.chart-container {
+    max-width: 240px;
+    margin: 16px auto 0;
+}
+
+/* ============================================================
+   11. VISITOR COUNTER
+   ============================================================ */
+.visitor-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-light, #e8f5ee);
+    border: 1px solid #b2d5bf;
+    color: var(--p-dark);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 14px auto;
+}
+
+/* ============================================================
+   12. FEEDBACK & RATING
+   ============================================================ */
+.feedback-section {
+    text-align: center;
+    padding: 14px 0 4px;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 14px;
+}
+
+.star-rating span {
+    font-size: 26px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 2px;
+}
+
+.star-rating span:hover,
+.star-rating span.selected {
+    color: var(--p-gold);
+}
+
+/* ============================================================
+   13. TABEL RESPONSIF (Cicil Emas)
+   ============================================================ */
 .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -141,7 +610,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     background: white;
-    min-width: 450px; /* Menjamin kolom tidak berhimpitan */
+    min-width: 450px;
 }
 
 th {
@@ -159,72 +628,46 @@ td {
 }
 
 /* ============================================================
-   6. ELEMEN SPESIFIK: DIGI-TAKSIR & PERHIASAN
+   14. CICIL EMAS PAGE — Tab & Controls
    ============================================================ */
-/* --- DIUBAH: Styling baris perhiasan agar lebih rapi --- */
-.item-row {
-    background: #f9f9f9;
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    border-left: 5px solid var(--p-gold);
-}
-
-.item-fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-/* --- DITAMBAHKAN: Responsivitas Grid untuk HP Kecil --- */
-@media (max-width: 380px) {
-    .item-fields {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ============================================================
-   7. DASHBOARD CARDS
-   ============================================================ */
-.card-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.card {
+.tab-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--p-green);
+    border-radius: 20px;
     background: white;
-    padding: 20px;
-    border-radius: 18px;
-    text-align: center;
-    text-decoration: none;
-    color: var(--text-main);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: var(--transition);
-    border: 1px solid #eee;
-}
-
-.card:hover {
-    border-color: var(--p-gold);
-    transform: translateY(-5px);
-}
-
-.card i {
-    font-size: 2rem;
     color: var(--p-green);
-    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.tab-btn.active {
+    background: var(--p-green);
+    color: white;
+}
+
+.tab-btn:hover:not(.active) {
+    background: var(--green-light, #e8f5ee);
+}
+
+.val-pinjaman {
+    font-weight: 700;
+    color: var(--p-green);
 }
 
 /* ============================================================
-   8. UTILITIES (MODAL & RESULT)
+   15. UTILITIES & HELPERS
    ============================================================ */
+.hidden { display: none !important; }
+
 .result-box {
     margin-top: 20px;
     padding: 15px;
     background: var(--light-gold);
     border-radius: 12px;
     border-left: 5px solid var(--primary-gold);
-    display: none; /* Muncul via JS */
+    display: none;
 }
 
 .result-box.active {
@@ -234,5 +677,29 @@ td {
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* ============================================================
+   16. RESPONSIVE
+   ============================================================ */
+@media (max-width: 480px) {
+    .header {
+        padding: 8px 1rem;
+        gap: 6px;
+    }
+    .header-title h2 { font-size: 0.95rem; }
+    .header-title p  { display: none; }
+}
+
+@media (max-width: 380px) {
+    .item-fields {
+        grid-template-columns: 1fr;
+    }
 }

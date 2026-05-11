@@ -3,163 +3,66 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DigiTaksir - Pegadaian Mayang Mangurai</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>Simulasi Cicil Emas - Pegadaian Mayang Mangurai</title>
   <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-
-<!-- HEADER -->
-<div class="header">
-  <div class="logo-container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Danantara_Indonesia_%28no_SW%29.svg/3840px-Danantara_Indonesia_%28no_SW%29.svg.png" alt="Logo Danantara"/>
-    <div style="width:1px;height:20px;background:#ddd;"></div>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Pegadaian_logo_%282013%29.svg/1280px-Pegadaian_logo_%282013%29.svg.png" alt="Logo Pegadaian"/>
-  </div>
-  <div class="header-title">
-    <h2>DIGI-<span>TAKSIR</span></h2>
-    <p>Digital Appraisal &amp; Education System</p>
-  </div>
-  <div class="header-right">
-    <a href="index.html" class="btn-dashboard">← Kembali</a>
-  </div>
-</div>
-
 <div class="container">
-  <div style="text-align:center;">
-    <div class="visitor-counter">
-      📍 Cabang Mayang Mangurai | <span id="countDisplay">0</span> Simulasi Berhasil
+  <div class="header">
+    <div class="header-logo">
+      <img src="https://webstoriess.enkosa.com/wp-content/uploads/2024/01/Download-Logo-Galeri-24-Pegadaian-PNG.png" alt="Galeri 24 Gold"/>
+      <div class="header-text">
+        <h1>Cicil <span class="gold-text">Emas</span> Pegadaian</h1>
+        <p>Pegadaian Cabang Mayang Mangurai</p>
+      </div>
+    </div>
+    <div class="header-right2">
+      <a href="index.html" class="btn-dashboard">← Kembali</a>
+      <div id="date-display" class="date-display">Memuat Tanggal...</div>
     </div>
   </div>
 
-  <!-- PILIH PRODUK -->
-  <div id="productSelection">
-    <p style="text-align:center;font-weight:bold;color:#555;">Pilih Produk Layanan:</p>
-    <div class="product-card" onclick="selectProduct('KCA')">
-      <h3>Gadai KCA (Kredit Cepat &amp; Aman)</h3>
-      <p>Gadai reguler dengan jangka waktu 120 hari. Solusi dana cepat dan aman.</p>
+  <div style="text-align:center;margin-bottom:20px;">
+    <p style="margin-bottom:15px;font-weight:bold;color:var(--dark-gold);">PILIH MARGIN ANGSURAN:</p>
+    <div class="margin-selector">
+      <button class="tab-btn" onclick="switchMargin(0.0053, this)">0.53%</button>
+      <button class="tab-btn" onclick="switchMargin(0.0071, this)">0.71%</button>
+      <button class="tab-btn active" onclick="switchMargin(0.0092, this)">0.92%</button>
     </div>
-    <div class="product-card" onclick="selectProduct('FLEKSI')">
-      <h3>Gadai Fleksi</h3>
-      <p>Sewa modal harian, bebas tebus kapan saja. Cocok untuk kebutuhan jangka sangat pendek.</p>
-    </div>
-    <div class="product-card" onclick="selectProduct('KRASIDA')">
-      <h3>Krasida (Kredit Gadai Sistem Angsuran)</h3>
-      <p>Solusi cicilan tetap bulanan untuk modal usaha atau investasi.</p>
+    <div class="control-group">
+      <label class="control-label">INPUT NOMINAL DP (RUPIAH):</label>
+      <div class="input-container">
+        <span class="currency-label">Rp</span>
+        <input type="text" id="dp-rupiah-input" class="dp-input-box" placeholder="Contoh: 500.000" oninput="handleDPInput(this.value)"/>
+      </div>
+      <div id="dp-info-text" class="info-dp">Minimal DP 15% dari harga emas</div>
     </div>
   </div>
 
-  <!-- INPUT SECTION -->
-  <div id="inputSection" style="display:none;">
-    <button class="back-btn" onclick="goBack()">← Ganti Produk</button>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Denominasi</th>
+          <th>DP 15% + ADM</th>
+          <th>Pinjaman</th>
+          <th>3 Bln</th>
+          <th>6 Bln</th>
+          <th>12 Bln</th>
+          <th>18 Bln</th>
+          <th>24 Bln</th>
+          <th>36 Bln</th>
+        </tr>
+      </thead>
+      <tbody id="simulation-table"></tbody>
+    </table>
+  </div>
 
-    <div class="mode-selector">
-      <div id="btnModeTaksir" class="mode-btn active" onclick="switchMode('taksir')">Taksir Emas</div>
-      <div id="btnModeInputUP" class="mode-btn" onclick="switchMode('inputUP')">Input Pinjaman</div>
-    </div>
-
-    <div class="card">
-      <!-- MODE TAKSIR -->
-      <div id="sectionTaksir">
-        <label>Jenis Jaminan</label>
-        <div class="type-selector">
-          <div id="btnPerhiasan" class="type-btn active" onclick="switchType('perhiasan')">Perhiasan</div>
-          <div id="btnBatangan" class="type-btn" onclick="switchType('batangan')">Batangan</div>
-        </div>
-
-        <!-- FORM PERHIASAN — MULTI ITEM (max 10) -->
-        <div id="formPerhiasan">
-          <div id="itemList"></div>
-          <button class="btn-add-item" id="btnAddItem" onclick="addItem()">+ Tambah Item Perhiasan</button>
-          <div class="total-taksiran-row" id="rowTotalTaksiran" style="display:none;">
-            <span>Total Taksiran:</span>
-            <span id="totalTaksiranDisplay" style="font-weight:bold;color:var(--p-green);">Rp 0</span>
-          </div>
-        </div>
-
-        <!-- FORM BATANGAN -->
-        <div id="formBatangan" class="hidden">
-          <label>Merek / Jenis Batangan</label>
-          <select id="merekBatangan" onchange="onMerekChange()">
-            <option value="galeri24">Galeri 24</option>
-            <option value="antam">ANTAM</option>
-            <option value="ubs">UBS</option>
-          </select>
-          <div id="infoMerek" class="merek-info"></div>
-          <label>Denominasi Batangan</label>
-          <select id="denominasi">
-            <option value="0.5">0.5 Gram</option>
-            <option value="1">1 Gram</option>
-            <option value="2">2 Gram</option>
-            <option value="5">5 Gram</option>
-            <option value="10">10 Gram</option>
-            <option value="25">25 Gram</option>
-            <option value="50">50 Gram</option>
-            <option value="100">100 Gram</option>
-            <option value="250">250 Gram</option>
-            <option value="500">500 Gram</option>
-            <option value="1000">1000 Gram</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- MODE INPUT UP -->
-      <div id="sectionInputUP" class="hidden">
-        <label>Nominal Pinjaman (Rp)</label>
-        <input type="number" id="inputNominalUP" placeholder="Contoh: 5000000"/>
-      </div>
-
-      <label>Jangka Waktu</label>
-      <select id="tenor"></select>
-
-      <button class="btn-hitung" onclick="hitungTaksiran()">HITUNG ESTIMASI</button>
-    </div>
-
-    <!-- PANEL HASIL -->
-    <div id="panelHasil" class="result-panel">
-      <div style="text-align:center;font-size:14px;font-weight:bold;" id="titleUP">Uang Pinjaman (UP)</div>
-      <div class="up-val" id="resUP">Rp 0</div>
-
-      <!-- Rincian item perhiasan -->
-      <div id="rincianItemSection" class="hidden">
-        <div class="table-title">Rincian Item Perhiasan</div>
-        <table class="kca-table">
-          <thead><tr><th>Item</th><th>Karat</th><th>Berat</th><th>Taksiran</th></tr></thead>
-          <tbody id="bodyRincianItem"></tbody>
-        </table>
-      </div>
-
-      <div class="info-row" id="rowTaksiran"><span>Total Nilai Taksiran:</span><span id="resTaksiran">-</span></div>
-      <div class="info-row"><span>Sewa Modal:</span><span id="resSewaDesc">-</span></div>
-      <div class="info-row"><span id="lblSewaNominal">Estimasi Sewa:</span><span id="resSewaNominal">-</span></div>
-      <div class="info-row"><span>Jatuh Tempo:</span><span id="resJatuhTempo" style="font-weight:bold;color:red;">-</span></div>
-
-      <div id="sectionDetailKCA" class="hidden">
-        <div class="table-title">Rincian Sewa Modal KCA</div>
-        <table class="kca-table">
-          <thead><tr><th>Periode</th><th>Hari Ke-</th><th>Sewa Modal</th></tr></thead>
-          <tbody id="bodyTabelKCA"></tbody>
-        </table>
-      </div>
-
-      <div class="chart-container">
-        <canvas id="loanChart"></canvas>
-      </div>
-
-      <p style="font-size:10px;color:red;font-style:italic;margin-top:10px;">
-        Estimasi awal. Keputusan final ada di Penaksir Pegadaian Cabang Mayang Mangurai
-      </p>
-
-      <div class="feedback-section">
-        <div style="font-size:13px;font-weight:bold;color:var(--p-dark);">Seberapa membantu simulasi ini?</div>
-        <div class="star-rating" id="starContainer">
-          <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span><span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span><span onclick="setRating(5)">★</span>
-        </div>
-      </div>
-    </div>
+  <div class="footer-info">
+    <p><b>Pegadaian Mayang Mangurai - Mengatasi Masalah Tanpa Masalah</b><br/>
+    <small>Harga emas Galeri 24 bersifat fluktuatif mengikuti harga pasar dunia.</small></p>
   </div>
 </div>
-
 <script src="js/script.js"></script>
 </body>
 </html>

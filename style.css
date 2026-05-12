@@ -58,6 +58,11 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* Cicil emas needs wider container for the table */
+body:has(#simulation-table) .container {
+    max-width: 860px;
+}
+
 /* ============================================================
    3. HEADER — DIGI-TAKSIR & CICIL EMAS
    ============================================================ */
@@ -550,7 +555,9 @@ input:focus, select:focus {
 }
 
 .chart-container {
+    position: relative;
     max-width: 240px;
+    height: 240px;
     margin: 16px auto 0;
 }
 
@@ -610,21 +617,26 @@ table {
     width: 100%;
     border-collapse: collapse;
     background: white;
-    min-width: 450px;
+    min-width: 600px;
 }
 
 th {
     background-color: var(--p-green);
     color: white;
     padding: 12px;
-    font-size: 14px;
+    font-size: 13px;
+    white-space: nowrap;
 }
 
 td {
-    padding: 12px;
+    padding: 10px 12px;
     border-bottom: 1px solid #f0f0f0;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
+}
+
+tr:hover td {
+    background: #f9fdf9;
 }
 
 /* ============================================================
@@ -696,24 +708,13 @@ td {
     }
     .header-title h2 { font-size: 0.95rem; }
     .header-title p  { display: none; }
+    .container { padding: 16px; }
 }
 
 @media (max-width: 380px) {
     .item-fields {
         grid-template-columns: 1fr;
     }
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* Memastikan canvas grafik tidak terlalu besar */
-.chart-container {
-    position: relative;
-    height: 250px;
-    width: 100%;
-    margin: 20px 0;
 }
 
 #resultChart {

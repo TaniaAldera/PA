@@ -13,7 +13,7 @@
 <div class="header">
   <div class="logo-container">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Danantara_Indonesia_%28no_SW%29.svg/3840px-Danantara_Indonesia_%28no_SW%29.svg.png" alt="Logo Danantara"/>
-    <div style="width:1px;height:20px;background:#ddd;"></div>
+    <div style="width:1px;height:18px;background:#ddd;flex-shrink:0;"></div>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Pegadaian_logo_%282013%29.svg/1280px-Pegadaian_logo_%282013%29.svg.png" alt="Logo Pegadaian"/>
   </div>
   <div class="header-title">
@@ -26,25 +26,27 @@
 </div>
 
 <div class="container">
+
+  <!-- Counter -->
   <div style="text-align:center;">
     <div class="visitor-counter">
-      📍 Cabang Mayang Mangurai | <span id="countDisplay">0</span> Simulasi Berhasil
+      📍 Cabang Mayang Mangurai &nbsp;|&nbsp; <span id="countDisplay">0</span> Simulasi Berhasil
     </div>
   </div>
 
   <!-- PILIH PRODUK -->
   <div id="productSelection">
-    <p style="text-align:center;font-weight:bold;color:#555;">Pilih Produk Layanan:</p>
+    <p style="text-align:center;font-weight:bold;color:#555;margin:12px 0 10px;">Pilih Produk Layanan:</p>
     <div class="product-card" onclick="selectProduct('KCA')">
-      <h3>Gadai KCA (Kredit Cepat &amp; Aman)</h3>
+      <h3>🏦 Gadai KCA (Kredit Cepat &amp; Aman)</h3>
       <p>Gadai reguler dengan jangka waktu 120 hari. Solusi dana cepat dan aman.</p>
     </div>
     <div class="product-card" onclick="selectProduct('FLEKSI')">
-      <h3>Gadai Fleksi</h3>
+      <h3>⚡ Gadai Fleksi</h3>
       <p>Sewa modal harian, bebas tebus kapan saja. Cocok untuk kebutuhan jangka sangat pendek.</p>
     </div>
     <div class="product-card" onclick="selectProduct('KRASIDA')">
-      <h3>Krasida (Kredit Gadai Sistem Angsuran)</h3>
+      <h3>📋 Krasida (Kredit Gadai Sistem Angsuran)</h3>
       <p>Solusi cicilan tetap bulanan untuk modal usaha atau investasi.</p>
     </div>
   </div>
@@ -67,7 +69,7 @@
           <div id="btnBatangan" class="type-btn" onclick="switchType('batangan')">Batangan</div>
         </div>
 
-        <!-- FORM PERHIASAN — MULTI ITEM (max 10) -->
+        <!-- FORM PERHIASAN — MULTI ITEM -->
         <div id="formPerhiasan">
           <div id="itemList"></div>
           <button class="btn-add-item" id="btnAddItem" onclick="addItem()">+ Tambah Item Perhiasan</button>
@@ -146,19 +148,24 @@
         <canvas id="loanChart"></canvas>
       </div>
 
-      <p style="font-size:10px;color:red;font-style:italic;margin-top:10px;">
-        Estimasi awal. Keputusan final ada di Penaksir Pegadaian Cabang Mayang Mangurai
+      <p style="font-size:10px;color:red;font-style:italic;margin-top:10px;text-align:center;">
+        ⚠️ Estimasi awal. Keputusan final ada di Penaksir Pegadaian Cabang Mayang Mangurai
       </p>
 
       <div class="feedback-section">
-        <div style="font-size:13px;font-weight:bold;color:var(--p-dark);">Seberapa membantu simulasi ini?</div>
+        <div style="font-size:13px;font-weight:bold;color:var(--p-dark);margin-bottom:6px;">Seberapa membantu simulasi ini?</div>
         <div class="star-rating" id="starContainer">
-          <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span><span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span><span onclick="setRating(5)">★</span>
+          <span onclick="setRating(1)">★</span>
+          <span onclick="setRating(2)">★</span>
+          <span onclick="setRating(3)">★</span>
+          <span onclick="setRating(4)">★</span>
+          <span onclick="setRating(5)">★</span>
         </div>
       </div>
     </div>
-  </div>
-</div>
+
+  </div><!-- end inputSection -->
+</div><!-- end container -->
 
 <script src="js/script.js"></script>
 </body>

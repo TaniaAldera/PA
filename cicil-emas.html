@@ -1,99 +1,99 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simulasi Cicil Emas - Pegadaian Mayang Mangurai</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulasi Cicil Emas - Pegadaian Mayang Mangurai</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
 
-    <!-- HEADER (mengikuti pola digi-taksir.html) -->
-    <div class="header">
-      <div class="logo-container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Danantara_Indonesia_%28no_SW%29.svg/3840px-Danantara_Indonesia_%28no_SW%29.svg.png" alt="Logo Danantara"/>
-        <div style="width:1px;height:20px;background:#ddd;"></div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Pegadaian_logo_%282013%29.svg/1280px-Pegadaian_logo_%282013%29.svg.png" alt="Logo Pegadaian"/>
-      </div>
-      <div class="header-title">
-        <h2>CICIL <span>EMAS</span></h2>
-        <p>Simulasi Cicilan Emas Galeri 24</p>
-      </div>
-      <div class="header-right">
-        <a href="index.html" class="btn-dashboard">← Kembali</a>
-      </div>
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Danantara_Indonesia_%28no_SW%29.svg/3840px-Danantara_Indonesia_%28no_SW%29.svg.png" alt="Logo Danantara"/>
+    <div style="width:1px;height:18px;background:#ddd;flex-shrink:0;"></div>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Pegadaian_logo_%282013%29.svg/1280px-Pegadaian_logo_%282013%29.svg.png" alt="Logo Pegadaian"/>
+  </div>
+  <div class="header-title">
+    <h2>CICIL <span>EMAS</span></h2>
+    <p>Simulasi Cicilan Emas Galeri 24</p>
+  </div>
+  <div class="header-right">
+    <a href="index.html" class="btn-dashboard">← Kembali</a>
+  </div>
+</div>
+
+<!-- MAIN CONTAINER (WIDE untuk tabel) -->
+<div class="container-wide">
+
+  <!-- Info cabang & tanggal -->
+  <div style="text-align:center; margin-bottom:16px;">
+    <div class="visitor-counter">
+      📍 Cabang Mayang Mangurai &nbsp;|&nbsp; <span id="date-display">Memuat...</span>
     </div>
+  </div>
 
-    <div class="container">
-
-      <!-- Tanggal & info -->
-      <div style="text-align:center; margin-bottom:16px;">
-        <div class="visitor-counter">
-          📍 Cabang Mayang Mangurai | <span id="date-display">Memuat Tanggal...</span>
-        </div>
-      </div>
-
-      <!-- MARGIN SELECTOR -->
-      <div style="text-align:center; margin-bottom:16px;">
-        <p style="margin-bottom:10px; font-weight:bold; color:var(--p-dark); font-size:13px;">
-          PILIH MARGIN ANGSURAN:
-        </p>
-        <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
-          <button class="tab-btn" onclick="switchMargin(0.0053, this)">0.53%</button>
-          <button class="tab-btn" onclick="switchMargin(0.0071, this)">0.71%</button>
-          <button class="tab-btn active" onclick="switchMargin(0.0092, this)">0.92%</button>
-        </div>
-      </div>
-
-      <!-- INPUT DP -->
-      <div class="card" style="margin-bottom:16px;">
-        <label>INPUT NOMINAL DP (RUPIAH):</label>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="font-weight:700; color:var(--p-dark); font-size:15px; white-space:nowrap;">Rp</span>
-          <input type="text" id="dp-rupiah-input" placeholder="Contoh: 500.000"
-            oninput="handleDPInput(this.value)"
-            style="flex:1; padding:10px 14px; border:1.5px solid #e0e0e0; border-radius:10px; font-size:15px;"/>
-        </div>
-        <div id="dp-info-text" style="font-size:11px; color:#888; margin-top:6px;">
-          Menggunakan standar minimal DP 15% per item
-        </div>
-      </div>
-
-      <!-- TABEL SIMULASI -->
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Denominasi</th>
-              <th>DP 15% + ADM</th>
-              <th>Pinjaman</th>
-              <th>3 Bln</th>
-              <th>6 Bln</th>
-              <th>12 Bln</th>
-              <th>18 Bln</th>
-              <th>24 Bln</th>
-              <th>36 Bln</th>
-            </tr>
-          </thead>
-          <tbody id="simulation-table"></tbody>
-        </table>
-      </div>
-
-      <!-- FOOTER INFO -->
-      <div style="text-align:center; margin-top:20px; padding:14px; background:#f0faf4;
-                  border-radius:12px; border:1px solid #b2d5bf;">
-        <p style="font-size:13px; color:var(--p-dark); font-weight:700; margin:0 0 4px;">
-          Pegadaian Mayang Mangurai — Mengatasi Masalah Tanpa Masalah
-        </p>
-        <small style="color:#666; font-size:11px;">
-          Harga emas Galeri 24 bersifat fluktuatif mengikuti harga pasar dunia.
-          Simulasi ini bersifat estimasi, nilai final ditentukan oleh petugas cabang.
-        </small>
-      </div>
-
+  <!-- PILIH MARGIN -->
+  <div style="text-align:center; margin-bottom:16px;">
+    <p style="margin-bottom:10px; font-weight:700; color:var(--p-dark); font-size:13px; letter-spacing:0.5px;">
+      PILIH MARGIN ANGSURAN:
+    </p>
+    <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
+      <button class="tab-btn" onclick="switchMargin(0.0053, this)">0.53%</button>
+      <button class="tab-btn" onclick="switchMargin(0.0071, this)">0.71%</button>
+      <button class="tab-btn active" onclick="switchMargin(0.0092, this)">0.92%</button>
     </div>
+  </div>
 
-    <script src="js/script.js"></script>
-  </body>
+  <!-- INPUT DP -->
+  <div class="card">
+    <label>INPUT NOMINAL DP TAMBAHAN (RUPIAH):</label>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="font-weight:700; color:var(--p-dark); font-size:15px; white-space:nowrap; flex-shrink:0;">Rp</span>
+      <input type="text" id="dp-rupiah-input" placeholder="Contoh: 500.000 (kosongkan untuk pakai minimal 15%)"
+        oninput="handleDPInput(this.value)" style="flex:1;"/>
+    </div>
+    <div id="dp-info-text" style="font-size:11px; color:#888; margin-top:6px;">
+      Menggunakan standar minimal DP 15% per item
+    </div>
+  </div>
+
+  <!-- TABEL SIMULASI -->
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Denominasi</th>
+          <th>DP 15% + ADM</th>
+          <th>Pinjaman</th>
+          <th>3 Bln</th>
+          <th>6 Bln</th>
+          <th>12 Bln</th>
+          <th>18 Bln</th>
+          <th>24 Bln</th>
+          <th>36 Bln</th>
+        </tr>
+      </thead>
+      <tbody id="simulation-table"></tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER INFO -->
+  <div style="text-align:center; margin-top:20px; padding:14px 16px; background:#f0faf4;
+              border-radius:12px; border:1px solid #b2d5bf;">
+    <p style="font-size:13px; color:var(--p-dark); font-weight:700; margin:0 0 4px;">
+      Pegadaian Mayang Mangurai — Mengatasi Masalah Tanpa Masalah
+    </p>
+    <small style="color:#666; font-size:11px; line-height:1.6;">
+      Harga emas Galeri 24 bersifat fluktuatif mengikuti harga pasar dunia.<br/>
+      Simulasi ini bersifat estimasi. Nilai final ditentukan oleh petugas cabang.
+    </small>
+  </div>
+
+</div><!-- end container-wide -->
+
+<script src="js/script.js"></script>
+</body>
 </html>
